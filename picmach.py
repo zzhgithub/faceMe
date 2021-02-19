@@ -1,32 +1,40 @@
 import face_recognition
+import os
+
+dir = "pic"
 
 # Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("obama.jpg")
-obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
+# obama_image = face_recognition.load_image_file("pic/obama.jpg")
+# obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
 # Load a second sample picture and learn how to recognize it.
-biden_image = face_recognition.load_image_file("biden.jpg")
-biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+# biden_image = face_recognition.load_image_file("pic/biden.jpg")
+# biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
 # Load me pic
-zzh_image = face_recognition.load_image_file("zzh.jpeg")
-zzh_face_encoding = face_recognition.face_encodings(zzh_image)[0]
-
-# Create arrays of known face encodings and their names
+# zzh_image = face_recognition.load_image_file("pic/zzh.jpeg")
+# zzh_face_encoding = face_recognition.face_encodings(zzh_image)[0]
 known_face_encodings = [
-    obama_face_encoding,
-    biden_face_encoding,
-    zzh_face_encoding
 ]
 known_face_names = [
-    "Barack Obama",
-    "Joe Biden",
-    "Zhou ZiHao"
 ]
 
 
+def addAll(sub_dir):
+    for root, dirs, files in os.walk(sub_dir):
+        for f in files:
+            tmp_image = face_recognition.load_image_file(os.path.join(root, f))
+            tmp_encoding = face_recognition.face_encodings(tmp_image)[0]
+            known_face_encodings.append(tmp_encoding)
+            known_face_names.append(os.path.join(root, f))
+        for d in dirs:
+            sub_dir(os.path.join(root, d))
+
+
+addAll(dir)
+
 # test image
-biden_image = face_recognition.load_image_file("biden.jpg")
+biden_image = face_recognition.load_image_file("WechatIMG1993.png")
 biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
 matches = face_recognition.compare_faces(known_face_encodings, biden_face_encoding)
