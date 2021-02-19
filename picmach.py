@@ -37,7 +37,7 @@ addAll(dir)
 biden_image = face_recognition.load_image_file("WechatIMG1993.png")
 biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
 
-matches = face_recognition.compare_faces(known_face_encodings, biden_face_encoding)
+matches = face_recognition.compare_faces(known_face_encodings, biden_face_encoding, tolerance=0.8)
 if True in matches:
     first_match_index = matches.index(True)
     name = known_face_names[first_match_index]
